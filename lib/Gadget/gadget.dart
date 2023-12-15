@@ -1,17 +1,26 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_helloworld/Gadget/itemmodel.dart';
+import 'package:flutter_helloworld/Gadget/pages/login.dart';
 import 'package:flutter_helloworld/Gadget/productdetail.dart';
-import 'package:flutter_helloworld/Gadget/seemore.dart';
-import 'package:flutter_helloworld/smoothpage.dart';
+import 'package:flutter_helloworld/Gadget/seemoreAccessories.dart';
+import 'package:flutter_helloworld/Gadget/seemorePhone.dart';
+import 'package:flutter_helloworld/Gadget/seemoreTablet.dart';
+import 'package:flutter_helloworld/Gadget/viewmodel/fetch_http.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+import 'package:flutter_helloworld/Gadget/model/product.dart';
 
 class HomeScreen extends StatelessWidget {
-  HomeScreen({super.key});
-  final Itemmodel = Laptop;
+  HomeScreen({
+    super.key,
+  });
+  final ApiFetch products = ApiFetch();
+  // final product = gad;
+  FirebaseAuth _auth = FirebaseAuth.instance;
 
   @override
   Widget build(BuildContext context) {
+    final Gadget gadgett;
     final controller = PageController();
     return Scaffold(
       appBar: AppBar(
@@ -39,7 +48,13 @@ class HomeScreen extends StatelessWidget {
         ),
         centerTitle: true,
         actions: [
-          Icon(Icons.search),
+          InkWell(
+              onTap: () {
+                _auth.signOut();
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => const Login()));
+              },
+              child: Icon(Icons.logout_rounded)),
           Padding(padding: EdgeInsets.only(right: 16))
         ],
       ),
@@ -74,36 +89,29 @@ class HomeScreen extends StatelessWidget {
                 child: PageView(
                   controller: controller,
                   children: [
-                    // Your pages go here
                     Container(
                       decoration: BoxDecoration(
                           image: DecorationImage(
                               image: NetworkImage(
-                                  'https://i.pinimg.com/originals/f6/c3/2a/f6c32a33afd1d019caefd1ceeac93010.png'),
+                                  'https://www.soydemac.com/wp-content/uploads/2019/07/Suscripci%C3%B3n_Apple_Music_1_mes.jpg'),
                               fit: BoxFit.cover),
-                          // color: const Color.fromARGB(255, 33, 243, 40),
                           borderRadius: BorderRadius.circular(12)),
-                      // Add your content for the first page
                     ),
                     Container(
                       decoration: BoxDecoration(
                           image: DecorationImage(
                               image: NetworkImage(
-                                  'https://cdn2.f-cdn.com/contestentries/1414523/974321/5b9b47a565e42_thumb900.jpg'),
+                                  'https://shopee.co.id/inspirasi-shopee/wp-content/uploads/2021/04/APPLE-ANNIVERSARY-LP-HEADER.jpg'),
                               fit: BoxFit.cover),
-                          // color: Colors.blue,
                           borderRadius: BorderRadius.circular(12)),
-                      // Add your content for the second page
                     ),
                     Container(
                       decoration: BoxDecoration(
                           image: DecorationImage(
                               image: NetworkImage(
-                                  'https://www.evetech.co.za/repository/ProductImages/lenovo-intel-gaming-laptops-banner-980px-v1.jpg'),
+                                  'https://heartofcodes.com/wp-content/uploads/2018/07/oQvWyIL-2400x1300.png'),
                               fit: BoxFit.cover),
-                          // color: const Color.fromARGB(255, 243, 79, 33),
                           borderRadius: BorderRadius.circular(12)),
-                      // Add your content for the third page
                     ),
                   ],
                 ),
@@ -130,78 +138,106 @@ class HomeScreen extends StatelessWidget {
                 child: ListView(
                   scrollDirection: Axis.horizontal,
                   children: [
-                    Container(
-                      margin: EdgeInsets.only(right: 12, left: 12),
-                      width: 120, padding: EdgeInsets.symmetric(horizontal: 12),
-                      // height: 20,
-                      decoration: BoxDecoration(
-                        color: Color.fromARGB(255, 255, 255, 255),
-                        borderRadius: BorderRadius.circular(12),
-                      ),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.pushReplacement(context, MaterialPageRoute(
+                          builder: (context) {
+                            return SeeMoreAccessories();
+                          },
+                        ));
+                      },
+                      child: Container(
+                        margin: EdgeInsets.only(right: 12, left: 12),
+                        width: 160,
+                        padding: EdgeInsets.symmetric(horizontal: 12),
+                        // height: 20,
+                        decoration: BoxDecoration(
+                          color: Color.fromARGB(255, 255, 255, 255),
+                          borderRadius: BorderRadius.circular(12),
+                        ),
 
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Container(
-                            width: 40,
-                            height: 40,
-                            child: Image.network(
-                                'https://support.apple.com/library/APPLE/APPLECARE_ALLGEOS/SP825/macbookair_2x.png'),
-                          ),
-                          Text(
-                            'Laptop',
-                            style:
-                                GoogleFonts.roboto(fontWeight: FontWeight.bold),
-                          )
-                        ],
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Container(
+                              width: 40,
+                              height: 40,
+                              child: Image.network(
+                                  'https://iqstoreindia.com/assets/images/watch-6/silver-aluminium-case-with-sport-band_clipped_rev_1.png'),
+                            ),
+                            Text(
+                              'Accessories',
+                              style: GoogleFonts.roboto(
+                                  fontWeight: FontWeight.bold),
+                            )
+                          ],
+                        ),
                       ),
                     ),
-                    Container(
-                      margin: EdgeInsets.only(right: 12),
-                      width: 120, padding: EdgeInsets.symmetric(horizontal: 12),
-                      // height: 20,
-                      decoration: BoxDecoration(
-                          color: const Color.fromARGB(255, 255, 255, 255),
-                          borderRadius: BorderRadius.circular(12)),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Container(
-                            width: 40,
-                            height: 40,
-                            child: Image.network(
-                                'https://media.croma.com/image/upload/v1662703105/Croma%20Assets/Communication/Mobiles/Images/261963_oqrd6j.png'),
-                          ),
-                          Text(
-                            'Phone',
-                            style:
-                                GoogleFonts.roboto(fontWeight: FontWeight.bold),
-                          )
-                        ],
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.pushReplacement(context, MaterialPageRoute(
+                          builder: (context) {
+                            return SeeMorePhone();
+                          },
+                        ));
+                      },
+                      child: Container(
+                        margin: EdgeInsets.only(right: 12),
+                        width: 120, padding: EdgeInsets.symmetric(horizontal: 12),
+                        // height: 20,
+                        decoration: BoxDecoration(
+                            color: const Color.fromARGB(255, 255, 255, 255),
+                            borderRadius: BorderRadius.circular(12)),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Container(
+                              width: 40,
+                              height: 40,
+                              child: Image.network(
+                                  'https://media.croma.com/image/upload/v1662703105/Croma%20Assets/Communication/Mobiles/Images/261963_oqrd6j.png'),
+                            ),
+                            Text(
+                              'Phone',
+                              style:
+                                  GoogleFonts.roboto(fontWeight: FontWeight.bold),
+                            )
+                          ],
+                        ),
                       ),
                     ),
-                    Container(
-                      margin: EdgeInsets.only(right: 12),
-                      width: 120, padding: EdgeInsets.symmetric(horizontal: 12),
-                      // height: 20,
-                      decoration: BoxDecoration(
-                          color: const Color.fromARGB(255, 255, 255, 255),
-                          borderRadius: BorderRadius.circular(12)),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Container(
-                            width: 40,
-                            height: 40,
-                            child: Image.network(
-                                'https://assets.stickpng.com/images/61d4a70f8b51e20004664d4d.png'),
-                          ),
-                          Text(
-                            'Tablet',
-                            style:
-                                GoogleFonts.roboto(fontWeight: FontWeight.bold),
-                          )
-                        ],
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.pushReplacement(context, MaterialPageRoute(
+                          builder: (context) {
+                            return SeeMoreTablet();
+                          },
+                        ));
+                      },
+                      child: Container(
+                        margin: EdgeInsets.only(right: 12),
+                        width: 120, padding: EdgeInsets.symmetric(horizontal: 12),
+                        // height: 20,
+                        decoration: BoxDecoration(
+                            color: const Color.fromARGB(255, 255, 255, 255),
+                            borderRadius: BorderRadius.circular(12)),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Container(
+                              width: 40,
+                              height: 40,
+                              child: Image.network(
+                                  'https://assets.stickpng.com/images/61d4a70f8b51e20004664d4d.png'),
+                            ),
+                            Text(
+                              'Tablet',
+                              style:
+                                  GoogleFonts.roboto(fontWeight: FontWeight.bold),
+                            )
+                          ],
+                        ),
                       ),
                     ),
                   ],
@@ -223,15 +259,9 @@ class HomeScreen extends StatelessWidget {
                           color: const Color.fromARGB(255, 0, 41, 112)),
                     ),
                     InkWell(
-                      onTap: () {
-                          Navigator.push(context, MaterialPageRoute(
-                            builder: (context) {
-                              return SeeMore();
-                            },
-                          ));
-                      },
+                      onTap: () {},
                       child: Text(
-                        'See All',
+                        '    ',
                         style: GoogleFonts.roboto(
                             color: const Color.fromARGB(255, 121, 121, 121),
                             fontWeight: FontWeight.w600),
@@ -241,256 +271,141 @@ class HomeScreen extends StatelessWidget {
                 ),
               ),
               Container(
-                margin: EdgeInsets.only(right: 12, left: 12, top: 4),
-                height: 184,
+                margin: EdgeInsets.only(right: 12, left: 12, top: 4, bottom: 8),
+                // height: 184,
                 width: double.infinity,
-                child: GridView.builder(
-                    physics: NeverScrollableScrollPhysics(),
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2, // Number of columns in the grid
-                      crossAxisSpacing: 8,
-                      mainAxisSpacing: 8,
-                    ),
-                    itemCount: 2, // Number of items in the grid
-                    itemBuilder: (BuildContext context, int index) {
-                      // Create and return grid items here
-                      return InkWell(
-                        onTap: () {
-                          Navigator.push(context, MaterialPageRoute(
-                            builder: (context) {
-                              return ProductDetail(
-                                Laptop: Laptop[index],
-                              );
-                            },
-                          ));
-                        },
-                        child: Container(
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(12),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Color.fromARGB(255, 172, 172, 172)
-                                    .withOpacity(0.7),
-                                spreadRadius: 1,
-                                blurRadius: 7,
-                                offset: Offset(0, 3),
-                              ),
-                            ],
+                child: FutureBuilder(
+                  future: products.getapiData(),
+                  builder: (BuildContext context, AsyncSnapshot snapshot) {
+                    if (snapshot.hasData) {
+                      return GridView.builder(
+                          shrinkWrap: true,
+                          physics: NeverScrollableScrollPhysics(),
+                          gridDelegate:
+                              SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2, // Number of columns in the grid
+                            crossAxisSpacing: 8,
+                            mainAxisSpacing: 8,
                           ),
-                          child: Column(children: [
-                            Container(
-                              margin: EdgeInsets.only(top: 20),
-                              width: 140,
-                              height: 80,
-                              decoration: BoxDecoration(
-                                  image: DecorationImage(
-                                      // fit: BoxFit.cover,
-                                      image:
-                                          NetworkImage(Laptop[index].image))),
-                            ),
-                            Container(
-                              margin:
-                                  EdgeInsets.only(right: 12, left: 12, top: 16),
-                              child: Row(
-                                children: [
-                                  Text(
-                                    Laptop[index].name,
-                                    style: GoogleFonts.roboto(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 16),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Container(
-                              margin:
-                                  EdgeInsets.only(right: 12, left: 12, top: 2),
-                              child: Row(
-                                children: [
-                                  Text(
-                                    Laptop[index].brand,
-                                    style: GoogleFonts.roboto(
-                                        fontWeight: FontWeight.w600,
-                                        fontSize: 12,
-                                        color: const Color.fromARGB(
-                                            255, 131, 131, 131)),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            Container(
-                              margin: EdgeInsets.only(
-                                right: 12,
-                                left: 12,
-                                top: 2,
-                              ),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    Laptop[index].price,
-                                    style: GoogleFonts.roboto(
-                                        fontWeight: FontWeight.bold,
-                                        fontSize: 12,
-                                        color: Color.fromARGB(255, 0, 0, 0)),
+                          itemCount: snapshot
+                              .data!.length, // Number of items in the grid
+                          itemBuilder: (BuildContext context, int index) {
+                            var product = snapshot.data![index];
+                            // Create and return grid items here
+                            return InkWell(
+                              onTap: () {
+                                Navigator.push(context, MaterialPageRoute(
+                                  builder: (context) {
+                                    return ProductDetail(
+                                      Item: product,
+                                    );
+                                  },
+                                ));
+                              },
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: Colors.white,
+                                  borderRadius: BorderRadius.circular(12),
+                                  boxShadow: [
+                                    BoxShadow(
+                                      color: Color.fromARGB(255, 172, 172, 172)
+                                          .withOpacity(0.7),
+                                      spreadRadius: 1,
+                                      blurRadius: 7,
+                                      offset: Offset(0, 3),
+                                    ),
+                                  ],
+                                ),
+                                child: Column(children: [
+                                  Container(
+                                    margin: EdgeInsets.only(top: 20),
+                                    width: 140,
+                                    height: 80,
+                                    decoration: BoxDecoration(
+                                        image: DecorationImage(
+                                            // fit: BoxFit.cover,
+                                            image:
+                                                NetworkImage(product.imgUrl))),
                                   ),
                                   Container(
-                                    alignment: Alignment.center,
+                                    margin: EdgeInsets.only(
+                                        right: 12, left: 12, top: 16),
                                     child: Row(
-                                      // crossAxisAlignment: CrossAxisAlignment.center,
                                       children: [
-                                        Icon(
-                                          Icons.star_rate_rounded,
-                                          size: 15,
+                                        Container(
+                                          child: Text(
+                                            product.name,
+                                            style: GoogleFonts.roboto(
+                                                fontWeight: FontWeight.bold,
+                                                fontSize: 12),
+                                          ),
                                         ),
+                                      ],
+                                    ),
+                                  ),
+                                  Container(
+                                    margin: EdgeInsets.only(
+                                        right: 12, left: 12, top: 2),
+                                    child: Row(
+                                      children: [
                                         Text(
-                                          '5.0',
-                                          style:
-                                              GoogleFonts.roboto(fontSize: 12),
+                                          product.year.toString(),
+                                          style: GoogleFonts.roboto(
+                                              fontWeight: FontWeight.w600,
+                                              fontSize: 12,
+                                              color: const Color.fromARGB(
+                                                  255, 131, 131, 131)),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                  Container(
+                                    margin: EdgeInsets.only(
+                                      right: 12,
+                                      left: 12,
+                                      top: 2,
+                                    ),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: [
+                                        Text(
+                                          '\$${product.price.toString()}',
+                                          style: GoogleFonts.roboto(
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 12,
+                                              color:
+                                                  Color.fromARGB(255, 0, 0, 0)),
+                                        ),
+                                        Container(
+                                          alignment: Alignment.center,
+                                          child: Row(
+                                            // crossAxisAlignment: CrossAxisAlignment.center,
+                                            children: [
+                                              Icon(
+                                                Icons.star_rate_rounded,
+                                                size: 15,
+                                              ),
+                                              Text(
+                                                '5.0',
+                                                style: GoogleFonts.roboto(
+                                                    fontSize: 12),
+                                              )
+                                            ],
+                                          ),
                                         )
                                       ],
                                     ),
                                   )
-                                ],
+                                ]),
                               ),
-                            )
-                          ]),
-                        ),
-                      );
-                    }),
-              ),
-              Container(
-                margin: EdgeInsets.only(top: 4),
-                padding: EdgeInsets.symmetric(horizontal: 12),
-                height: 40,
-                width: double.infinity,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      'Limited Edition',
-                      style: GoogleFonts.roboto(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 20,
-                          color: const Color.fromARGB(255, 0, 41, 112)),
-                    ),
-                    Text(
-                      'See All',
-                      style: GoogleFonts.roboto(
-                          color: const Color.fromARGB(255, 121, 121, 121),
-                          fontWeight: FontWeight.w600),
-                    )
-                  ],
+                            );
+                          });
+                    } else {
+                      return Center(child: CircularProgressIndicator());
+                    }
+                  },
                 ),
-              ),
-              Container(
-                margin: EdgeInsets.only(right: 12, left: 12, top: 4, bottom: 8),
-                height: 184, // Adjust the height as needed
-                width: double.infinity,
-                child: GridView.builder(
-                    physics: NeverScrollableScrollPhysics(),
-                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2, // Number of columns in the grid
-                      crossAxisSpacing: 8,
-                      mainAxisSpacing: 8,
-                    ),
-                    itemCount: 2, // Number of items in the grid
-                    itemBuilder: (BuildContext context, int index) {
-                      // Create and return grid items here
-                      return Container(
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(12),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Color.fromARGB(255, 172, 172, 172)
-                                  .withOpacity(0.7),
-                              spreadRadius: 1,
-                              blurRadius: 7,
-                              offset: Offset(0, 3),
-                            ),
-                          ],
-                        ),
-                        child: Column(children: [
-                          Container(
-                            margin: EdgeInsets.only(top: 20),
-                            width: 140,
-                            height: 80,
-                            // color: Colors.amber,
-                            child: Image.network(
-                                'https://support.apple.com/library/APPLE/APPLECARE_ALLGEOS/SP825/macbookair_2x.png'),
-                          ),
-                          Container(
-                            margin:
-                                EdgeInsets.only(right: 12, left: 12, top: 16),
-                            child: Row(
-                              children: [
-                                Text(
-                                  'MacBook Air M1',
-                                  style: GoogleFonts.roboto(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 16),
-                                ),
-                              ],
-                            ),
-                          ),
-                          Container(
-                            margin:
-                                EdgeInsets.only(right: 12, left: 12, top: 2),
-                            child: Row(
-                              children: [
-                                Text(
-                                  'Apple',
-                                  style: GoogleFonts.roboto(
-                                      fontWeight: FontWeight.w600,
-                                      fontSize: 12,
-                                      color: const Color.fromARGB(
-                                          255, 131, 131, 131)),
-                                ),
-                              ],
-                            ),
-                          ),
-                          Container(
-                            margin: EdgeInsets.only(
-                              right: 12,
-                              left: 12,
-                              top: 2,
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text(
-                                  'Rp.12.999.000',
-                                  style: GoogleFonts.roboto(
-                                      fontWeight: FontWeight.bold,
-                                      fontSize: 12,
-                                      color: Color.fromARGB(255, 0, 0, 0)),
-                                ),
-                                Container(
-                                  alignment: Alignment.center,
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    // crossAxisAlignment: CrossAxisAlignment.center,
-                                    children: [
-                                      Icon(
-                                        Icons.star_rate_rounded,
-                                        size: 15,
-                                      ),
-                                      Text(
-                                        '5.0',
-                                        style: GoogleFonts.roboto(fontSize: 12),
-                                      )
-                                    ],
-                                  ),
-                                )
-                              ],
-                            ),
-                          )
-                        ]),
-                      );
-                    }),
               ),
             ],
           ),

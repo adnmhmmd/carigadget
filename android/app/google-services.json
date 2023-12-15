@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "494903099406",
+    "project_id": "carigadget-f3594",
+    "storage_bucket": "carigadget-f3594.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:494903099406:android:8ce94c1536565f08567c5f",
+        "android_client_info": {
+          "package_name": "com.example.flutter_helloworld"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBrA_GUubteVVfJLmrmsfKHDH4BKvjYz28"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:494903099406:android:aa3eb00a3508bc12567c5f",
+        "android_client_info": {
+          "package_name": "com.example.uts"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBrA_GUubteVVfJLmrmsfKHDH4BKvjYz28"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
